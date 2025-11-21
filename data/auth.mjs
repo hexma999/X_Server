@@ -56,10 +56,25 @@ export async function createUser(userid, password, name, email) {
   return user;
 }
 
+// 모든 회원을 리턴
+export async function getAll() {
+  return users;
+}
+
+// 사용자 아이디(userid)에 대한 회원을 리턴
+export async function getAllByUserid(userid) {
+  return users.filter((user) => user.userid === userid);
+}
+
 // 로그인
 export async function login(userid, password) {
   const user = users.find(
     (user) => user.userid === userid && user.password === password
   );
+  return user;
+}
+
+export async function findByUserid(userid) {
+  const user = users.find((user) => user.userid === userid);
   return user;
 }
