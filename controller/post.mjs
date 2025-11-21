@@ -35,7 +35,7 @@ export async function updatePost(req, res, next) {
   if (post) {
     res.status(201).json(post);
   } else {
-    res.status(404).json({ message: `${id}의 포스트가 없스빈다.` });
+    res.status(404).json({ message: `${id}의 포스트가 없습니다.` });
   }
 }
 
