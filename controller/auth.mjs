@@ -15,7 +15,7 @@ export async function login(req, res, next) {
   const { userid, password } = req.body;
   const user = await authRepository.login(userid, password);
   if (user) {
-    res.status(200).json({ message: `${userid}님 로그인 완료` });
+    res.status(200).json({ message: `${userid}님 로그인 완료!` });
   } else {
     res
       .status(404)
