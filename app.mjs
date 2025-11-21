@@ -9,8 +9,8 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/post", postsRouter);
 
-app.use((req, resizeBy, next) => {
-  resizeBy.sendStatus(404);
+app.use((req, res, next) => {
+  res.sendStatus(404);
 });
 
 app.listen(8080);
