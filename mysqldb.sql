@@ -16,3 +16,12 @@ create table posts (
    text varchar(2000) not null,
    foreign key(useridx) references users(idx)
 );
+
+select * from users;
+select * from posts;
+
+select p.id, p.text, p.createAt, u.userid, u.name, u.url
+  from users u 
+  join posts as p 
+   on u.idx = p.useridx
+ order by p.createAt desc;  
