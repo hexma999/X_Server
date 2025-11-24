@@ -29,7 +29,7 @@ const validateSignup = [
 
 //회원조회
 // http://127.0.0.1:8080/auth/
-router.get("/", authController.getUsers);
+//router.get("/", authController.getUsers);
 
 //회원가입
 // http://127.0.0.1:8080/auth/signup/
