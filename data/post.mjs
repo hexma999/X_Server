@@ -33,30 +33,6 @@ const ORDER_ASC = "order by p.createAt asc";
 //     createdAt: Date.now().toString(),
 //     url: "https://randomuser.me/api/portraits/men/44.jpg",
 //   },
-//   {
-//     id: "3",
-//     name: "이메론",
-//     userid: "melon",
-//     text: "Elasticsearch 연동 완료! 실시간 검색 API 짜릿해 :돋보기:",
-//     createdAt: Date.now().toString(),
-//     url: "https://randomuser.me/api/portraits/men/11.jpg",
-//   },
-//   {
-//     id: "4",
-//     name: "반하나",
-//     userid: "banana",
-//     text: "JavaScript 비동기 너무 어렵다... Promises, async/await, 뭐가 뭔지 :울음:",
-//     createdAt: Date.now().toString(),
-//     url: "https://randomuser.me/api/portraits/women/52.jpg",
-//   },
-//   {
-//     id: "5",
-//     name: "채리",
-//     userid: "cherry",
-//     text: "새 프로젝트 시작! Express + MongoDB + EJS 조합 좋아요 :전구:",
-//     createdAt: Date.now().toString(),
-//     url: "https://randomuser.me/api/portraits/women/29.jpg",
-//   },
 // ];
 
 // 모든 포스트를 리턴
