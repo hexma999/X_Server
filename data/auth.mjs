@@ -1,3 +1,4 @@
+import { db } from "../db/database.mjs";
 let users = [
   {
     id: "1",
@@ -42,18 +43,26 @@ let users = [
 ];
 
 // 회원가입
-export async function createUser(userid, password, name, email) {
-  const user = {
-    id: Date.now().toString(),
-    userid,
-    password,
-    name,
-    email,
-    url: "https://randomuser.me/api/portraits/men/29.jpg",
-  };
+export async function createUser(user) {
+  const { userid, password, name, email, url } = user;
+  // const user = {
+  //   id: Date.now().toString(),
+  //   userid,
+  //   password,
+  //   name,
+  //   email,
+  //   url: "https://randomuser.me/api/portraits/men/29.jpg",
+  // };
 
-  users = [user, ...users];
-  return user;
+  // users = [user, ...users];
+  //return user;
+
+  return db
+    .execute(
+      "insert into users (userid,password,name,email,url) values(?,?,?,?,?)",
+      [userid, password, name, email, url]
+    )
+    .then((result) => result[0].insertId);
 }
 
 // 모든 회원을 리턴
@@ -75,11 +84,21 @@ export async function login(userid, password) {
 }
 
 export async function findByUserid(userid) {
-  const user = users.find((user) => user.userid === userid);
-  return user;
+  //const user = users.find((user) => user.userid === userid);
+  //return user;
+
+  return db
+    .execute("select idx, password from users where userid=?", [userid])
+    .then((result) => {
+      console.log("result : ", result);
+      return result[0][0];
+    });
 }
 
-export async function findById(id) {
-  const user = users.find((user) => user.id === id);
-  return user;
+export async function findById(idx) {
+  //const user = users.find((user) => user.id === id);
+  //return user;
+  return db
+    .execute("select idx,userid from users where idx = ?", [idx])
+    .then((result) => result[0][0]);
 }
