@@ -1,3 +1,7 @@
+import MongoDB from "mongodb";
+import { getUsers } from "../db/database.mjs";
+const ObjectID = MongoDB.ObjectId;
+
 let users = [
   {
     id: "1",
@@ -42,18 +46,21 @@ let users = [
 ];
 
 // 회원가입
-export async function createUser(userid, password, name, email) {
-  const user = {
-    id: Date.now().toString(),
-    userid,
-    password,
-    name,
-    email,
-    url: "https://randomuser.me/api/portraits/men/29.jpg",
-  };
+export async function createUser(user) {
+  // const user = {
+  //   id: Date.now().toString(),
+  //   userid,
+  //   password,
+  //   name,
+  //   email,
+  //   url: "https://randomuser.me/api/portraits/men/29.jpg",
+  // };
 
-  users = [user, ...users];
-  return user;
+  // users = [user, ...users];
+  //return user;
+  return getUsers()
+    .insertOne(user)
+    .then((result) => result.insertedId.toString());
 }
 
 // 모든 회원을 리턴
@@ -67,19 +74,28 @@ export async function getAllByUserid(userid) {
 }
 
 // 로그인
-export async function login(userid, password) {
-  const user = users.find(
-    (user) => user.userid === userid && user.password === password
-  );
-  return user;
-}
+// export async function login(userid, password) {
+//   const user = users.find(
+//     (user) => user.userid === userid && user.password === password
+//   );
+//   return user;
+// }
 
 export async function findByUserid(userid) {
-  const user = users.find((user) => user.userid === userid);
-  return user;
+  //const user = users.find((user) => user.userid === userid);
+  //return user;
+  return getUsers().find({ userid }).next().then(mapOptionalUser);
 }
 
 export async function findById(id) {
-  const user = users.find((user) => user.id === id);
-  return user;
+  // const user = users.find((user) => user.id === id);
+  // return user;
+  return getUsers()
+    .find({ _id: new ObjectID(id) })
+    .next()
+    .then(mapOptionalUser);
+}
+
+function mapOptionalUser(user) {
+  return user ? { ...user, id: user._id.toString() } : user;
 }
