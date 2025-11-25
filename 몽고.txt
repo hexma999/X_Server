@@ -1,0 +1,255 @@
+//mongodb+srv://hexma999:va......@cluster0.q4bb8ke.mongodb.net/?appName=Cluster0
+
+// 데이터베이스 확인
+show databases
+
+// 데이터베이스 생성 및 선택(없으면 만들어서 선택)
+use aidetect
+
+// 컬렉션 확인
+show collections
+
+// 문서 한 개 추가
+db.test.insertOne({userid:"apple",name:"김사과",age:20})
+
+// 데이터 조회
+db.test.find()
+
+// 컬렉션 생성
+db.createCollection("user")
+
+// 문서 추가
+db.user.insertOne({userid:"apple",name:"김사과",age:20})
+
+db.user.insertOne({name:"김사과",age:20,job:"프로그래머"})
+
+db.user.find()
+
+// 문서 여러개 추가
+db.user.insertMany([
+{name:"반하나",age:25, job:"공무원"},
+{name:"이메론",age:30, job:"의사"},
+{name:"오렌지",age:33, job:"교직원"}
+])
+
+// 문서 한개 수정
+db.user.updateOne({name:"반하나"},{$set:{age:22}})
+
+// 문서 여러 개 수정
+db.user.updateMany({name:"김사과"},{$set:{job:"개발자"}})
+
+// 문서 삭제
+db.user.deleteOne({name:"오렌지"})
+
+// 컬렉션 삭제
+db.user.drop()
+
+// 데이터베이스 삭제
+db.dropDatabase()
+
+// 여러문서 추가하기
+db.students.insertMany([
+{name:"김사과", age:20, major:"컴퓨터공학", grade:3.8},
+{name:"반하나", age:23, major:"수학", grade:3.4},
+{name:"오렌지", age:25, major:"물리", grade:3.6},
+{name:"이메론", age:30, major:"수학", grade:3.9},
+{name:"채애리", age:33, major:"컴퓨터공학", grade:3.2}
+])
+
+// 모든 문서 보기
+db.students.find()
+
+// 나이가 23살인 학생
+db.students.find({age:23})
+db.students.find({age:{$eq:23}})
+
+// 나이가 23살보다 많은 학생
+db.students.find({age:{$gt:23}})
+
+// 컴퓨터공학 전공이 아닌 학생
+db.students.find({major:{$ne:"컴퓨터공학"}})
+
+// 나이가 21살이상이면서 전공이 수학인 학생
+db.students.find({
+    $and: [
+        {age:{$gte:21}},{major:"수학"}
+    ]
+})
+
+// 나이가 20살이거나 전공이 물리인 학생
+db.students.find({
+    $or: [
+          {age:20}, {major: "물리"}
+         ]
+})
+
+//나이로 내림차순 정렬
+db.students.find().sort({age:-1})
+
+// 성적으로 오름차순 정렬
+db.students.find().sort({grade:1})
+
+// 상위 2명만 보기
+db.students.find().limit(2)
+// 2명을 건너뛰고 나머지 보기
+db.students.find().skip(2)
+
+// 전공이 수학 또는 물리인 학생 중 성적이 3.3 이상인 학생을 성적 높은 순으로 2명만 조회
+db.students.find({
+    $and: [
+        {major: { $in: ["수학", "물리"] }},
+        {grade: { $gte: 3.3 }}
+    ]
+}).sort({ grade: -1 }).limit(2)
+
+db.students.find()
+
+db.students.insertOne({name:"김사과", age:20, major:"컴퓨터공학", grade:3.8})
+
+db.students.find({ _id: ObjectId("692512469412cb9c7c441538")})
+db.students.find()
+db.students.updateOne({ _id: ObjectId("692512469412cb9c7c441538")},
+    { $set: {name:"채리"}})
+    
+ObjectId("692512469412cb9c7c441538").getTimestamp()
+// Timestamp(4, 문서가 생생된 시각), MachineID(3, 장비고유값), ProcessId(2, 프로세스 식별값), Counter(3,유니크 보장 위한 증가값)
+
+db.user.insertMany([
+    {
+        _id: 1,
+        name: "김사과",
+        age: 20,
+        gender: "여",
+        joinDate: ISODate("2023-01-10T00:00:00Z"),
+        tags: ["몽고DB", "집계"],
+        orders: [
+            { orderId: 101, amount: 200000, orderDate: ISODate("2024-01-15T00:00:00Z") },
+            { orderId: 102, amount: 450000, orderDate: ISODate("2024-03-22T00:00:00Z") }
+        ],
+        products: [
+            { productId: "p1", category: "전자제품", price: 500000, rating: 4.8 },
+            { productId: "p2", category: "의류", price: 50000, rating: 4.2 }
+        ]
+    },
+    {
+        _id: 2,
+        name: "반하나",
+        age: 25,
+        gender: "여",
+        joinDate: ISODate("2024-02-20T00:00:00Z"),
+        tags: ["데이터베이스", "몽고DB"],
+        orders: [
+            { orderId: 103, amount: 300000, orderDate: ISODate("2024-02-18T00:00:00Z") }
+        ],
+        products: [
+            { productId: "p3", category: "전자제품", price: 120000, rating: 4.6 }
+        ]
+    },
+    {
+        _id: 3,
+        name: "오렌지",
+        age: 30,
+        gender: "남",
+        joinDate: ISODate("2024-03-05T00:00:00Z"),
+        tags: ["몽고DB", "집계", "데이터베이스"],
+        orders: [],
+        products: [
+            { productId: "p4", category: "의류", price: 80000, rating: 4.1 }
+        ]
+    }
+])
+
+db.user.find()
+
+db.user.aggregate([{$match: {}}])
+
+// 30세 이상인 사람만 선택
+db.user.aggregate([{$match: {age: {$gte: 30}}}])
+
+// 이름과 나이만 보여주기
+db.user.aggregate([
+    {$project: {name: 1, age: 1, _id: 0 }}
+])
+
+// 모든 사용자의 평균 나이 구하기
+// _id: null 데이터를 한 덩어리로 묶음
+db.user.aggregate([
+    { $group: { _id: null, avgAge:{$avg: "$age"}}}
+])
+
+// 성별로 인원 수 세기
+db.user.aggregate([
+    { $group: { _id: "$gender", count: { $sum: 1 }}}
+])
+
+// 나이가 많은 순으로 상위 2명만 보기
+db.user.aggregate([
+    { $sort: { age: -1 }},
+    { $limit: 2 }
+])
+
+// 연도별 가입자 수 구하기
+db.user.aggregate([
+    {
+        $group: {
+            _id: { $year: "$joinDate" },
+            userCount: { $sum: 1 }            
+        }
+    },
+    { $sort: { "_id": 1 }}
+])
+
+// 태그별로 몇 번 등장했는지 세기
+db.user.aggregate([
+    { $unwind: "$tags" },
+    { $group: { _id: "$tags", count: { $sum: 1 }}},
+    { $sort: { count: -1 }}
+])
+
+// 사용자별 총 구매 금액 구하기
+db.user.aggregate([
+    { $unwind: "$orders"},
+    {
+        $group: {
+            _id: "$_id",
+            total: { $sum: "$orders.amount" }
+        }
+    }
+])
+
+// 카테고리별 평균/최고 가격
+// $avg, $max
+db.user.aggregate([
+    { $unwind: "$products" },
+    {
+        $group: {
+            _id: "$products.category",
+            avgPrice: { $avg: "$products.price" },
+            maxPrice: { $max: "$products.price" }
+        }
+    }
+])
+
+// 평점 4.5 이상인 전자제품만 보기
+db.user.aggregate([
+    { $unwind: "$products" },
+    { $match: { "products.category": "전자제품", "products.rating": { $gte: 4.5 } }},
+    { $sort: { "products.rating": -1 }}
+])
+
+// 2024년 월별 매출 계산하기
+db.user.aggregate([
+    { $unwind: "$orders" },
+    {
+        $match: {
+            "orders.orderDate": { $gte: ISODate("2024-01-01"), $lte: ISODate("2024-12-31")}
+        }
+    },
+    {
+        $group: {
+            _id: { month: { $month: "$orders.orderDate"} },
+            totalSales: { $sum: "$orders.amount" }
+        }
+    },
+    { $sort: { "_id.month": 1 }}
+])
