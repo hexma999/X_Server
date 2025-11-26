@@ -15,3 +15,16 @@ ODM(Object Data Modeling)
 NoSQL 데이터베이스를 객체 기반으로 다룰 수 있게 도와주는 라이브러리 또는 기술
 
 SQL은 ORM(Object Relational Mapping)을 사용
+
+* merge 하기
+1. main 으로 이동
+git switch main
+
+2. 로컬 main 최신화(동기화)
+git pull origin main
+
+3. feature/mongoose 내용을 main 에 합치기
+git merge feature/mongoose
+
+4. 병합된 main 을 원격으로 푸시
+git push origin main
