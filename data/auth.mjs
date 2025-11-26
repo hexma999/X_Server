@@ -1,6 +1,22 @@
 import MongoDB from "mongodb";
-import { getUsers } from "../db/database.mjs";
-const ObjectID = MongoDB.ObjectId;
+import { useVirtualId } from "../db/database.mjs";
+import { mongoose } from "mongoose";
+//const ObjectID = MongoDB.ObjectId;
+
+//versoinKey : mongoose가 문서를 저장할 때 자동으로 추가하는 _v 라는 필드를 설정
+const userSchema = new mongoose.Schema(
+  {
+    userid: { type: String, require: true },
+    name: { type: String, require: true },
+    email: { type: String, require: true },
+    password: { type: String, require: true },
+    url: String,
+  },
+  { versionKey: false }
+);
+
+useVirtualId(userSchema);
+const User = mongoose.model("User", userSchema);
 
 let users = [
   {
@@ -19,48 +35,11 @@ let users = [
     email: "banana@banana.com",
     url: "https://randomuser.me/api/portraits/women/44.jpg",
   },
-  {
-    id: "3",
-    userid: "orange",
-    password: "3333",
-    name: "오렌지",
-    email: "orange@orange.com",
-    url: "https://randomuser.me/api/portraits/men/11.jpg",
-  },
-  {
-    id: "4",
-    userid: "berry",
-    password: "4444",
-    name: "배애리",
-    email: "orange@orange.com",
-    url: "https://randomuser.me/api/portraits/women/52.jpg",
-  },
-  {
-    id: "5",
-    userid: "melon",
-    password: "5555",
-    name: "이메론",
-    email: "orange@orange.com",
-    url: "https://randomuser.me/api/portraits/men/29.jpg",
-  },
 ];
 
 // 회원가입
 export async function createUser(user) {
-  // const user = {
-  //   id: Date.now().toString(),
-  //   userid,
-  //   password,
-  //   name,
-  //   email,
-  //   url: "https://randomuser.me/api/portraits/men/29.jpg",
-  // };
-
-  // users = [user, ...users];
-  //return user;
-  return getUsers()
-    .insertOne(user)
-    .then((result) => result.insertedId.toString());
+  return new User(user).save().then((data) => data.id);
 }
 
 // 모든 회원을 리턴
@@ -73,29 +52,10 @@ export async function getAllByUserid(userid) {
   return users.filter((user) => user.userid === userid);
 }
 
-// 로그인
-// export async function login(userid, password) {
-//   const user = users.find(
-//     (user) => user.userid === userid && user.password === password
-//   );
-//   return user;
-// }
-
 export async function findByUserid(userid) {
-  //const user = users.find((user) => user.userid === userid);
-  //return user;
-  return getUsers().find({ userid }).next().then(mapOptionalUser);
+  return User.findOne({ userid: userid });
 }
 
 export async function findById(id) {
-  // const user = users.find((user) => user.id === id);
-  // return user;
-  return getUsers()
-    .find({ _id: new ObjectID(id) })
-    .next()
-    .then(mapOptionalUser);
-}
-
-function mapOptionalUser(user) {
-  return user ? { ...user, id: user._id.toString() } : user;
+  return User.findById(id);
 }
