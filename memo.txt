@@ -28,3 +28,5 @@ git merge feature/mongoose
 
 4. 병합된 main 을 원격으로 푸시
 git push origin main
+
+npm i cors
